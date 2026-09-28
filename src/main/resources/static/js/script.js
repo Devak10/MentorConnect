@@ -224,17 +224,13 @@ function setFieldError(inputEl, errorEl, message) {
 
 function validateName(val, inputEl, errorEl) {
     const raw = (val !== undefined && val !== null) ? String(val) : "";
-    if (raw.length === 0 || raw.trim().length === 0) {
+    if (raw.length === 0) {
         setFieldError(inputEl, errorEl, "Name is required.");
         return false;
     }
-    if (/^\s|\s$|\s{2,}/.test(raw)) {
-        setFieldError(inputEl, errorEl, "Please enter a valid name without extra spaces.");
-        return false;
-    }
-    const nameRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
+    const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
     if (!nameRegex.test(raw)) {
-        setFieldError(inputEl, errorEl, "Name must contain only letters, with spaces, hyphens, or apostrophes between words.");
+        setFieldError(inputEl, errorEl, "Name must contain only English letters and single spaces between words.");
         return false;
     }
     clearFieldError(inputEl, errorEl);
@@ -431,7 +427,7 @@ async function handleAlumniSubmit(e) {
     }
 
     const payload = {
-        name: nameInput.value.trim(),
+        name: nameInput.value,
         email: emailInput.value.trim(),
         expertise: expertiseInput.value.trim(),
         maxMentees: parseInt(maxMenteesInput.value, 10)
@@ -537,7 +533,7 @@ async function handleStudentSubmit(e) {
     }
 
     const payload = {
-        name: nameInput.value.trim(),
+        name: nameInput.value,
         email: emailInput.value.trim(),
         interests: interestsInput.value.trim()
     };
@@ -1244,21 +1240,23 @@ function initForms() {
 
     const alumniName = document.getElementById("alumni-name");
     if (alumniName) {
+        const errorEl = document.getElementById("alumni-name-error");
         alumniName.addEventListener("input", () => {
-            const errorEl = document.getElementById("alumni-name-error");
-            if (errorEl && errorEl.classList.contains("active")) {
-                validateName(alumniName.value, alumniName, errorEl);
-            }
+            validateName(alumniName.value, alumniName, errorEl);
+        });
+        alumniName.addEventListener("blur", () => {
+            validateName(alumniName.value, alumniName, errorEl);
         });
     }
 
     const studentName = document.getElementById("student-name");
     if (studentName) {
+        const errorEl = document.getElementById("student-name-error");
         studentName.addEventListener("input", () => {
-            const errorEl = document.getElementById("student-name-error");
-            if (errorEl && errorEl.classList.contains("active")) {
-                validateName(studentName.value, studentName, errorEl);
-            }
+            validateName(studentName.value, studentName, errorEl);
+        });
+        studentName.addEventListener("blur", () => {
+            validateName(studentName.value, studentName, errorEl);
         });
     }
 
