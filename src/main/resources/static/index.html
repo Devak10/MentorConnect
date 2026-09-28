@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MentorConnect - Alumni-Student Mentorship Matching Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="brand-title">MentorConnect</h1>
+                    <p class="brand-subtitle">Alumni–Student Mentorship Matching Platform</p>
+                </div>
+            </div>
+            <div class="backend-badge" id="backend-status-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                </svg>
+                <span class="status-dot"></span>
+                <span id="backend-status-text">Backend Connected</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="app-nav">
+        <div class="nav-container">
+            <button class="nav-tab active" data-target="dashboard">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
+            </button>
+            <button class="nav-tab" data-target="alumni">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Alumni</span>
+            </button>
+            <button class="nav-tab" data-target="students">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                <span>Students</span>
+            </button>
+            <button class="nav-tab" data-target="matching">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>Find Mentors</span>
+            </button>
+            <button class="nav-tab" data-target="mentorships">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span>Mentorships</span>
+            </button>
+            <button class="nav-tab" data-target="sessions">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Sessions</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+
+        <!-- ============================================== -->
+        <!-- 1. DASHBOARD SECTION -->
+        <!-- ============================================== -->
+        <section id="section-dashboard" class="content-section active">
+            <div class="hero-banner">
+                <div class="hero-text">
+                    <h2>Welcome to MentorConnect</h2>
+                    <p>Connect students with alumni mentors based on shared interests and expertise.</p>
+                </div>
+                <button class="btn btn-outline" id="btn-refresh-dashboard">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path></svg>
+                    <span>Refresh Stats</span>
+                </button>
+            </div>
+
+            <!-- Stats Cards Grid -->
+            <div class="stats-grid">
+                <div class="stat-card" data-jump="alumni">
+                    <div class="stat-icon stat-icon-blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Total Alumni</span>
+                        <span class="stat-value" id="stat-alumni">-</span>
+                    </div>
+                </div>
+
+                <div class="stat-card" data-jump="students">
+                    <div class="stat-icon stat-icon-indigo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Total Students</span>
+                        <span class="stat-value" id="stat-students">-</span>
+                    </div>
+                </div>
+
+                <div class="stat-card" data-jump="mentorships">
+                    <div class="stat-icon stat-icon-emerald">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Total Mentorships</span>
+                        <span class="stat-value" id="stat-mentorships">-</span>
+                    </div>
+                </div>
+
+                <div class="stat-card" data-jump="sessions">
+                    <div class="stat-icon stat-icon-purple">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Total Sessions</span>
+                        <span class="stat-value" id="stat-sessions">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Cards -->
+            <div class="quick-actions-card card">
+                <h3 class="card-title">Quick Actions</h3>
+                <div class="quick-buttons">
+                    <button class="btn btn-primary" data-jump="matching">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        Find Matching Mentors
+                    </button>
+                    <button class="btn btn-secondary" data-jump="alumni">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Register New Alumni
+                    </button>
+                    <button class="btn btn-secondary" data-jump="students">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Register New Student
+                    </button>
+                    <button class="btn btn-secondary" data-jump="mentorships">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        Create Mentorship Pair
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- 2. ALUMNI SECTION -->
+        <!-- ============================================== -->
+        <section id="section-alumni" class="content-section">
+            <div class="section-header">
+                <div>
+                    <h2>Alumni Management</h2>
+                    <p class="section-subtitle">Register and manage alumni mentors in the platform.</p>
+                </div>
+            </div>
+
+            <!-- Alumni Registration Form Card -->
+            <div class="card form-card">
+                <h3 class="card-title">Register New Alumni</h3>
+                <form id="form-alumni" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="alumni-name">Name <span class="required">*</span></label>
+                            <input type="text" id="alumni-name" placeholder="e.g. Arun Kumar" autocomplete="name">
+                            <div class="field-error" id="alumni-name-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alumni-email">Email <span class="required">*</span></label>
+                            <input type="email" id="alumni-email" placeholder="e.g. arun@gmail.com" autocomplete="email">
+                            <div class="field-error" id="alumni-email-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alumni-expertise">Expertise <span class="required">*</span></label>
+                            <input type="text" id="alumni-expertise" placeholder="e.g. Java, Spring Boot, MySQL">
+                            <div class="field-hint">Comma-separated areas of expertise</div>
+                            <div class="field-error" id="alumni-expertise-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alumni-max-mentees">Maximum Mentees <span class="required">*</span></label>
+                            <input type="number" id="alumni-max-mentees" min="1" step="1" placeholder="e.g. 2">
+                            <div class="field-hint">Positive whole number (1 or more)</div>
+                            <div class="field-error" id="alumni-max-mentees-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-alumni">
+                            <span>Add Alumni</span>
+                        </button>
+                        <button type="reset" class="btn btn-outline" id="btn-reset-alumni">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Alumni List Table Card -->
+            <div class="card table-card">
+                <div class="table-header">
+                    <h3 class="card-title">Existing Alumni (<span id="alumni-count">0</span>)</h3>
+                    <button class="btn btn-sm btn-outline" id="btn-refresh-alumni">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path></svg>
+                        Refresh
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Expertise</th>
+                                <th style="width: 140px;">Max Mentees</th>
+                                <th style="width: 100px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alumni-table-body">
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">Loading alumni...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- 3. STUDENT SECTION -->
+        <!-- ============================================== -->
+        <section id="section-students" class="content-section">
+            <div class="section-header">
+                <div>
+                    <h2>Student Management</h2>
+                    <p class="section-subtitle">Register and manage students looking for mentorship.</p>
+                </div>
+            </div>
+
+            <!-- Student Registration Form Card -->
+            <div class="card form-card">
+                <h3 class="card-title">Register New Student</h3>
+                <form id="form-student" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="student-name">Name <span class="required">*</span></label>
+                            <input type="text" id="student-name" placeholder="e.g. Rahul Kumar" autocomplete="name">
+                            <div class="field-error" id="student-name-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="student-email">Email <span class="required">*</span></label>
+                            <input type="email" id="student-email" placeholder="e.g. rahul@gmail.com" autocomplete="email">
+                            <div class="field-error" id="student-email-error"></div>
+                        </div>
+
+                        <div class="form-group span-full">
+                            <label for="student-interests">Interests <span class="required">*</span></label>
+                            <input type="text" id="student-interests" placeholder="e.g. Java, Spring Boot, MySQL">
+                            <div class="field-hint">Comma-separated interests or technical domains</div>
+                            <div class="field-error" id="student-interests-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-student">
+                            <span>Add Student</span>
+                        </button>
+                        <button type="reset" class="btn btn-outline" id="btn-reset-student">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Student List Table Card -->
+            <div class="card table-card">
+                <div class="table-header">
+                    <h3 class="card-title">Existing Students (<span id="student-count">0</span>)</h3>
+                    <button class="btn btn-sm btn-outline" id="btn-refresh-students">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path></svg>
+                        Refresh
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Interests</th>
+                                <th style="width: 100px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-table-body">
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">Loading students...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- 4. MATCHING SECTION -->
+        <!-- ============================================== -->
+        <section id="section-matching" class="content-section">
+            <div class="section-header">
+                <div>
+                    <h2>Find Mentors for Student</h2>
+                    <p class="section-subtitle">Match students with alumni ranked by shared expertise and interests.</p>
+                </div>
+            </div>
+
+            <!-- Search Card -->
+            <div class="card matching-search-card">
+                <div class="matching-search-header">
+                    <h3 class="search-card-title">Search Matching Alumni</h3>
+                    <p class="search-card-desc">Enter a student's ID to discover alumni mentors ranked by matching interests.</p>
+                </div>
+                <form id="form-matching" class="matching-form" novalidate>
+                    <div class="form-group inline-search-group">
+                        <label for="match-student-id" class="search-label">Student ID <span class="required">*</span></label>
+                        <div class="search-input-wrapper">
+                            <div class="search-input-container">
+                                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <input type="number" id="match-student-id" min="1" step="1" placeholder="Enter student ID (e.g. 1)">
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="btn-find-matches">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <span>Find Mentors</span>
+                            </button>
+                        </div>
+                        <div class="field-error" id="match-student-id-error"></div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Matching Results Container -->
+            <div id="matching-results-area" class="matching-results-area">
+                <div class="empty-state" id="matching-placeholder">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <h4>Search for Matching Mentors</h4>
+                    <p>Enter a Student ID above and click "Find Mentors" to view ranked matching alumni.</p>
+                </div>
+
+                <div id="matching-results-header" class="matching-results-header" style="display: none;">
+                    <h3 class="card-title">Matching Alumni Mentors (<span id="matches-count">0</span>)</h3>
+                    <p class="text-muted">Ranked by shared interests from the backend algorithm.</p>
+                </div>
+
+                <div id="matching-grid" class="mentor-cards-grid" style="display: none;"></div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- 5. MENTORSHIP SECTION -->
+        <!-- ============================================== -->
+        <section id="section-mentorships" class="content-section">
+            <div class="section-header">
+                <div>
+                    <h2>Mentorship Pairs</h2>
+                    <p class="section-subtitle">Connect registered alumni mentors with students and monitor active pairings.</p>
+                </div>
+            </div>
+
+            <!-- Mentorship Form Card -->
+            <div class="card form-card mentorship-form-card">
+                <div class="card-header-group">
+                    <h3 class="card-title">Create Mentorship Pair</h3>
+                    <p class="card-desc">Assign a registered alumni mentor to a student mentee.</p>
+                </div>
+                <div class="info-alert">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span>The backend automatically validates mentor capacity, assigns the <strong>ACTIVE</strong> status, and sets the match timestamp.</span>
+                </div>
+                <form id="form-mentorship" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="mentorship-alumni-id">Alumni <span class="required">*</span></label>
+                            <select id="mentorship-alumni-id" disabled>
+                                <option value="">Select Alumni</option>
+                            </select>
+                            <div class="field-hint" id="mentorship-alumni-hint">Select a registered alumni mentor</div>
+                            <div class="field-error" id="mentorship-alumni-id-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mentorship-student-id">Student <span class="required">*</span></label>
+                            <select id="mentorship-student-id" disabled>
+                                <option value="">Select Student</option>
+                            </select>
+                            <div class="field-hint" id="mentorship-student-hint">Select a registered student mentee</div>
+                            <div class="field-error" id="mentorship-student-id-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-mentorship">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <span>Create Mentorship</span>
+                        </button>
+                        <button type="reset" class="btn btn-outline" id="btn-reset-mentorship">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Mentorship List Table Card -->
+            <div class="card table-card mentorship-table-card">
+                <div class="table-header">
+                    <div>
+                        <h3 class="card-title">Existing Mentorship Pairs (<span id="mentorship-count">0</span>)</h3>
+                        <p class="table-desc">Active and historical pairings between alumni and students.</p>
+                    </div>
+                    <button class="btn btn-sm btn-outline" id="btn-refresh-mentorships">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path></svg>
+                        Refresh
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table mentorship-data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 130px;">Mentorship ID</th>
+                                <th>Alumni</th>
+                                <th>Student</th>
+                                <th style="width: 130px;">Status</th>
+                                <th>Matched Date</th>
+                                <th style="width: 110px; text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mentorship-table-body">
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">Loading mentorships...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- 6. SESSION SECTION -->
+        <!-- ============================================== -->
+        <section id="section-sessions" class="content-section">
+            <div class="section-header">
+                <div>
+                    <h2>Mentorship Sessions</h2>
+                    <p class="section-subtitle">Schedule and record mentoring sessions between mentors and students.</p>
+                </div>
+            </div>
+
+            <!-- Session Form Card -->
+            <div class="card form-card">
+                <h3 class="card-title">Schedule New Session</h3>
+                <form id="form-session" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="session-pair-id">Mentorship Pair <span class="required">*</span></label>
+                            <select id="session-pair-id">
+                                <option value="">Select Mentorship Pair</option>
+                            </select>
+                            <div class="field-hint" id="session-pair-hint">Select a mentorship pair</div>
+                            <div class="field-error" id="session-pair-id-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="session-scheduled-at">Scheduled Date & Time <span class="required">*</span></label>
+                            <input type="datetime-local" id="session-scheduled-at">
+                            <div class="field-error" id="session-scheduled-at-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="session-status">Status <span class="required">*</span></label>
+                            <select id="session-status">
+                                <option value="SCHEDULED">SCHEDULED</option>
+                                <option value="COMPLETED">COMPLETED</option>
+                                <option value="CANCELLED">CANCELLED</option>
+                            </select>
+                            <div class="field-error" id="session-status-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="session-notes">Notes <span class="optional">(Optional)</span></label>
+                            <input type="text" id="session-notes" placeholder="e.g. Introduction and goal discussion">
+                            <div class="field-error" id="session-notes-error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="btn-submit-session">
+                            <span>Schedule Session</span>
+                        </button>
+                        <button type="reset" class="btn btn-outline" id="btn-reset-session">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Session List Table Card -->
+            <div class="card table-card">
+                <div class="table-header">
+                    <h3 class="card-title">Existing Sessions (<span id="session-count">0</span>)</h3>
+                    <button class="btn btn-sm btn-outline" id="btn-refresh-sessions">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path></svg>
+                        Refresh
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Session ID</th>
+                                <th style="width: 130px;">Pair ID</th>
+                                <th>Scheduled At</th>
+                                <th style="width: 130px;">Status</th>
+                                <th>Notes</th>
+                                <th style="width: 100px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="session-table-body">
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">Loading sessions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>MentorConnect &copy; 2026 &mdash; Alumni–Student Mentorship Matching Platform</p>
+    </footer>
+
+    <!-- Vanilla JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>
